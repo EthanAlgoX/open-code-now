@@ -137,9 +137,14 @@ end tell
 EOF
             ;;
         "Warp")
-            open -a "Warp" "$TARGET_DIR"
-            sleep 0.5
-            osascript -e "tell application \"System Events\" to keystroke \"cd '$TARGET_DIR' && bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'\" & return"
+            # Warp doesn't support AppleScript well, so we create a temp script and execute it
+            local TEMP_SCRIPT=$(mktemp /tmp/opencode-now-warp.XXXXXX.sh)
+            echo "#!/bin/bash" > "$TEMP_SCRIPT"
+            echo "cd '$TARGET_DIR' && bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'" >> "$TEMP_SCRIPT"
+            chmod +x "$TEMP_SCRIPT"
+            open -a "Warp" "$TEMP_SCRIPT"
+            # Clean up after a delay (Warp should have started by then)
+            (sleep 5 && rm -f "$TEMP_SCRIPT") &
             ;;
         "Kitty")
             if command -v kitty >/dev/null 2>&1; then

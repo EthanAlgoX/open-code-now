@@ -42,9 +42,16 @@ REM Check if bin is in PATH
 echo %PATH% | findstr /C:"%USERPROFILE%\bin" >nul
 if %errorLevel% neq 0 (
     echo.
-    echo Adding %USERPROFILE%\bin to PATH...
-    setx PATH "%PATH%;%USERPROFILE%\bin" >nul
-    echo PATH updated. Please restart your terminal for changes to take effect.
+    echo Adding %USERPROFILE%\bin to user PATH...
+    REM Use PowerShell to safely update user PATH without truncation
+    powershell -Command "[Environment]::SetEnvironmentVariable('Path', [Environment]::GetEnvironmentVariable('Path', 'User') + ';%USERPROFILE%\bin', 'User')"
+    if %errorLevel% equ 0 (
+        echo PATH updated successfully.
+    ) else (
+        echo Warning: Could not update PATH automatically.
+        echo Please manually add %USERPROFILE%\bin to your PATH.
+    )
+    echo Please restart your terminal for changes to take effect.
 )
 
 echo.

@@ -8,7 +8,8 @@
 # Automatically detects OpenCode installation across multiple package managers.
 # ============================================================================
 
-set -e
+# Note: We intentionally do NOT use 'set -e' here because function return values
+# are used for control flow and set -e would cause premature script exits.
 
 # Configuration
 LAST_DIR_FILE="$HOME/.opencode-now-last-dir"
@@ -149,6 +150,8 @@ find_opencode() {
         "/opt/homebrew/bin/opencode"
         "/usr/bin/opencode"
         "$HOME/.cargo/bin/opencode"
+        "$HOME/go/bin/opencode"
+        "$GOPATH/bin/opencode"
     )
     
     for path in "${COMMON_PATHS[@]}"; do

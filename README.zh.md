@@ -2,7 +2,7 @@
 
 [OpenCode](https://github.com/opencode-ai/opencode) 快速启动工具 - 消除在不同目录启动 OpenCode 时的重复终端命令。
 
-[English](README.md) | [中文](#)
+[English](README.md) | **中文**
 
 ---
 
@@ -43,7 +43,7 @@ opencode --version
 
 ### macOS
 
-**方式一：应用包**
+#### 方式一：应用包
 
 ```bash
 # 1. 下载 OpenCode Now.app
@@ -53,7 +53,7 @@ opencode --version
 #    - Finder 工具栏：⌘-拖动到工具栏，在任意文件夹点击
 ```
 
-**方式二：Shell 脚本**
+#### 方式二：Shell 脚本
 
 ```bash
 git clone https://github.com/yourusername/opencode-now.git
@@ -86,7 +86,7 @@ cp macos/opencode-now.sh /usr/local/bin/opencode-now
 
 ### macOS 组件
 
-```
+```text
 OpenCode Now.app/
 ├── Contents/
 │   ├── Info.plist              # Bundle 元数据，CFBundleIdentifier: com.opencode.launcher
@@ -109,7 +109,7 @@ macos/
 
 ### Windows 组件
 
-```
+```text
 windows/
 ├── opencode-now.ps1            # PowerShell 启动器（OpenCode 检测 + 执行）
 ├── install.bat                 # 复制脚本到 %USERPROFILE%\bin
