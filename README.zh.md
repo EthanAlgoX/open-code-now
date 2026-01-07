@@ -43,32 +43,44 @@ opencode --version
 
 ### macOS
 
-#### 方式一：应用包
+#### 方式一：应用包（推荐）
 
 ```bash
-# 1. 从 Releases 下载 `OpenCode Now.app`
-# 2. **重要**：将 `OpenCode Now.app` 拖入 `/Applications` (应用程序) 文件夹
-#    (必须安装到应用程序文件夹才能正常工作)
-# 3. 启动方式：
-#    - **启动台 (Launchpad)**：点击 OpenCode Now 图标
-#    - **Dock 栏**：拖动应用到 Dock，点击启动
+# 1. 克隆仓库
+git clone https://github.com/EthanAlgoX/open-code-now.git
+cd open-code-now
+
+# 2. 设置可执行权限
+chmod +x "OpenCode Now.app/Contents/MacOS/OpenCodeLauncher"
+
+# 3. 复制到应用程序文件夹
+cp -R "OpenCode Now.app" /Applications/
+
+# 4. 刷新图标缓存（如果图标未显示）
+killall Finder
+
+# 5. 启动方式：
+#    - **启动台 (Launchpad)**：搜索并点击 OpenCode Now
+#    - **Dock 栏**：从应用程序文件夹拖动到 Dock，点击启动
 #    - **Finder 工具栏**：按住 ⌘ 拖动应用到工具栏，在任意文件夹点击即可
 ```
 
-#### 方式二：Shell 脚本
+#### 方式二：Shell 脚本（命令行）
 
 ```bash
-git clone https://github.com/yourusername/opencode-now.git
-# 注意：确保仓库目录名为 'open-code-now'（带连字符）
+# 1. 克隆仓库
+git clone https://github.com/EthanAlgoX/open-code-now.git
 cd open-code-now
+
+# 2. 设置可执行权限
 chmod +x macos/opencode-now.sh
 
-# 直接执行
-# 直接执行（根据需要调整路径）
-./macos/opencode-now.sh /path/to/project
+# 3. 直接执行（指定目录）
+./macos/opencode-now.sh ~/Documents/MyProject
 
-# 或全局安装
-cp macos/opencode-now.sh /usr/local/bin/opencode-now
+# 或全局安装（可在任何位置调用）
+sudo cp macos/opencode-now.sh /usr/local/bin/opencode-now
+# 使用：opencode-now /path/to/project
 ```
 
 ### Windows

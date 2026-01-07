@@ -43,32 +43,44 @@ opencode --version
 
 ### macOS
 
-#### Method 1: App Bundle
+#### Method 1: App Bundle (Recommended)
 
 ```bash
-# 1. Download `OpenCode Now.app` from Releases
-# 2. **Important**: Drag `OpenCode Now.app` to `/Applications` folder
-#    (The app must be in /Applications to work correctly)
-# 3. Launch methods:
-#    - **Launchpad**: Click OpenCode Now icon
-#    - **Dock**: Drag app to Dock, click to launch
-#    - **Finder Toolbar**: Hold ⌘ and drag app to Finder toolbar for folder-specific launches
+# 1. Clone repository
+git clone https://github.com/EthanAlgoX/open-code-now.git
+cd open-code-now
+
+# 2. Set executable permissions
+chmod +x "OpenCode Now.app/Contents/MacOS/OpenCodeLauncher"
+
+# 3. Copy to Applications folder
+cp -R "OpenCode Now.app" /Applications/
+
+# 4. Refresh icon cache (if icon doesn't appear)
+killall Finder
+
+# 5. Launch methods:
+#    - **Launchpad**: Search and click OpenCode Now
+#    - **Dock**: Drag from Applications to Dock, click to launch
+#    - **Finder Toolbar**: Hold ⌘ and drag app to toolbar for folder-specific launches
 ```
 
-#### Method 2: Shell Script
+#### Method 2: Shell Script (Command Line)
 
 ```bash
-git clone https://github.com/yourusername/opencode-now.git
-# Note: Ensure repository directory is 'open-code-now' (with hyphens)
+# 1. Clone repository
+git clone https://github.com/EthanAlgoX/open-code-now.git
 cd open-code-now
+
+# 2. Set executable permissions
 chmod +x macos/opencode-now.sh
 
-# Direct execution
-# Direct execution (adjust path if needed)
-./macos/opencode-now.sh /path/to/project
+# 3. Direct execution (specify directory)
+./macos/opencode-now.sh ~/Documents/MyProject
 
-# Or install globally
-cp macos/opencode-now.sh /usr/local/bin/opencode-now
+# Or install globally (callable from anywhere)
+sudo cp macos/opencode-now.sh /usr/local/bin/opencode-now
+# Usage: opencode-now /path/to/project
 ```
 
 ### Windows
