@@ -204,10 +204,11 @@ get_target_directory() {
     # Validate directory exists
     if [ ! -d "$TARGET_DIR" ]; then
         echo "❌ Error: Directory '$TARGET_DIR' does not exist" >&2
-        exit 1
+        return 1  # Return error code instead of exit
     fi
     
     echo "$TARGET_DIR"
+    return 0
 }
 
 # ============================================================================
@@ -218,9 +219,15 @@ main() {
     # Setup PATH
     setup_path
     
-    # Get target directory (will exit if invalid)
+    # Get target directory (will return error code if invalid)
     local TARGET_DIR
     TARGET_DIR=$(get_target_directory "$1")
+    local dir_status=$?
+    
+    # Exit if directory validation failed
+    if [ $dir_status -ne 0 ]; then
+        exit 1
+    fi
     
     # Change to target directory
     cd "$TARGET_DIR" || exit 1
