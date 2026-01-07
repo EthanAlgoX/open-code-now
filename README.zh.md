@@ -46,21 +46,25 @@ opencode --version
 #### 方式一：应用包
 
 ```bash
-# 1. 下载 OpenCode Now.app
-# 2. 移动到 /Applications
+# 1. 从 Releases 下载 `OpenCode Now.app`
+# 2. **重要**：将 `OpenCode Now.app` 拖入 `/Applications` (应用程序) 文件夹
+#    (必须安装到应用程序文件夹才能正常工作)
 # 3. 启动方式：
-#    - Dock：拖动应用到 Dock，点击启动
-#    - Finder 工具栏：⌘-拖动到工具栏，在任意文件夹点击
+#    - **启动台 (Launchpad)**：点击 OpenCode Now 图标
+#    - **Dock 栏**：拖动应用到 Dock，点击启动
+#    - **Finder 工具栏**：按住 ⌘ 拖动应用到工具栏，在任意文件夹点击即可
 ```
 
 #### 方式二：Shell 脚本
 
 ```bash
 git clone https://github.com/yourusername/opencode-now.git
-cd opencode-now
+# 注意：确保仓库目录名为 'open-code-now'（带连字符）
+cd open-code-now
 chmod +x macos/opencode-now.sh
 
 # 直接执行
+# 直接执行（根据需要调整路径）
 ./macos/opencode-now.sh /path/to/project
 
 # 或全局安装

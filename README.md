@@ -2,7 +2,7 @@
 
 Quick launcher utility for [OpenCode](https://github.com/opencode-ai/opencode) - eliminates repetitive terminal commands when starting OpenCode in different directories.
 
-[English](#) | [中文](README.zh.md)
+**English** | [中文](README.zh.md)
 
 ---
 
@@ -15,7 +15,7 @@ Quick launcher utility for [OpenCode](https://github.com/opencode-ai/opencode) -
 ### Key Capabilities
 
 | Feature | Implementation |
-|---------|----------------|
+| :--- | :--- |
 | **Auto-detection** | Searches npm, yarn, pnpm, nvm, Go bin, and system paths |
 | **Context-aware** | Launches in current Finder window or specified directory |
 | **Terminal agnostic** | Supports iTerm2, Warp, Kitty, Alacritty, Terminal.app |
@@ -43,24 +43,28 @@ opencode --version
 
 ### macOS
 
-**Method 1: App Bundle**
+#### Method 1: App Bundle
 
 ```bash
-# 1. Download OpenCode Now.app
-# 2. Move to /Applications
+# 1. Download `OpenCode Now.app` from Releases
+# 2. **Important**: Drag `OpenCode Now.app` to `/Applications` folder
+#    (The app must be in /Applications to work correctly)
 # 3. Launch methods:
-#    - Dock: Drag app to Dock, click to launch
-#    - Finder toolbar: ⌘-drag to toolbar, click in any folder
+#    - **Launchpad**: Click OpenCode Now icon
+#    - **Dock**: Drag app to Dock, click to launch
+#    - **Finder Toolbar**: Hold ⌘ and drag app to Finder toolbar for folder-specific launches
 ```
 
-**Method 2: Shell Script**
+#### Method 2: Shell Script
 
 ```bash
 git clone https://github.com/yourusername/opencode-now.git
-cd opencode-now
+# Note: Ensure repository directory is 'open-code-now' (with hyphens)
+cd open-code-now
 chmod +x macos/opencode-now.sh
 
 # Direct execution
+# Direct execution (adjust path if needed)
 ./macos/opencode-now.sh /path/to/project
 
 # Or install globally
