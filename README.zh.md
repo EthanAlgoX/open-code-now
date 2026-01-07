@@ -254,7 +254,7 @@ plutil -lint "OpenCode Now.app/Contents/Info.plist"
 
 ## 许可证
 
-MIT License - 详见 [LICENSE](LICENSE)
+Apache License 2.0 - 详见 [LICENSE](LICENSE)
 
 ---
 
