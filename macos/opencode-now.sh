@@ -203,7 +203,7 @@ get_target_directory() {
     
     # Validate directory exists
     if [ ! -d "$TARGET_DIR" ]; then
-        echo "❌ Error: Directory '$TARGET_DIR' does not exist"
+        echo "❌ Error: Directory '$TARGET_DIR' does not exist" >&2
         exit 1
     fi
     
@@ -218,7 +218,7 @@ main() {
     # Setup PATH
     setup_path
     
-    # Get target directory
+    # Get target directory (will exit if invalid)
     local TARGET_DIR
     TARGET_DIR=$(get_target_directory "$1")
     
