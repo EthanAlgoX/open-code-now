@@ -90,7 +90,7 @@ cp macos/opencode-now.sh /usr/local/bin/opencode-now
 
 ### macOS Components
 
-```
+```text
 OpenCode Now.app/
 ├── Contents/
 │   ├── Info.plist              # Bundle metadata, CFBundleIdentifier: com.opencode.launcher
@@ -113,7 +113,7 @@ macos/
 
 ### Windows Components
 
-```
+```text
 windows/
 ├── opencode-now.ps1            # PowerShell launcher (OpenCode detection + execution)
 ├── install.bat                 # Copies script to %USERPROFILE%\bin
@@ -195,7 +195,7 @@ chmod +x "OpenCode Now.app/Contents/MacOS/OpenCodeLauncher"
 
 ### Project Structure
 
-```
+```text
 .
 ├── macos/
 │   ├── opencode-now.sh          # Launcher implementation
