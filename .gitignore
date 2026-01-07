@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Archives (distribute separately)
+*.zip
+*.tar.gz
+
+# Build artifacts
+dist/
+build/
+
+# Reference project - do not upload to git
+claude-code-now-main/

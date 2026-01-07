@@ -1,0 +1,177 @@
+#!/bin/bash
+
+# ============================================================================
+# OpenCode Now - macOS App Bundle Launcher
+# ============================================================================
+# This script is executed when the app is launched from Finder or Dock.
+# It determines the working directory and launches OpenCode.
+# ============================================================================
+
+# Get the directory of this script (inside the .app bundle)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+APP_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
+
+# Configuration files
+LAST_DIR_FILE="$HOME/.opencode-now-last-dir"
+TERMINAL_CONFIG_FILE="$HOME/.opencode-now-terminal"
+DEFAULT_WORK_DIR="$HOME/Documents/OpenCode"
+
+# ============================================================================
+# Determine Target Directory
+# ============================================================================
+
+get_target_directory() {
+    # Priority 1: If launched with a folder (drag-drop or Finder toolbar)
+    if [ -n "$1" ] && [ -d "$1" ]; then
+        echo "$1"
+        return
+    fi
+    
+    # Priority 2: Get current Finder window path
+    FINDER_PATH=$(osascript -e 'tell application "Finder"
+        try
+            set currentPath to (POSIX path of (target of front window as alias))
+            return currentPath
+        on error
+            return ""
+        end try
+    end tell' 2>/dev/null)
+    
+    if [ -n "$FINDER_PATH" ] && [ -d "$FINDER_PATH" ]; then
+        echo "$FINDER_PATH"
+        return
+    fi
+    
+    # Priority 3: Last used directory
+    if [ -f "$LAST_DIR_FILE" ]; then
+        LAST_DIR=$(cat "$LAST_DIR_FILE")
+        if [ -d "$LAST_DIR" ]; then
+            echo "$LAST_DIR"
+            return
+        fi
+    fi
+    
+    # Priority 4: Default working directory
+    mkdir -p "$DEFAULT_WORK_DIR"
+    echo "$DEFAULT_WORK_DIR"
+}
+
+# ============================================================================
+# Terminal Detection
+# ============================================================================
+
+get_preferred_terminal() {
+    # Check user preference
+    if [ -f "$TERMINAL_CONFIG_FILE" ]; then
+        PREF=$(cat "$TERMINAL_CONFIG_FILE" | tr -d '\n\r')
+        case "$PREF" in
+            "iTerm2")
+                if [ -d "/Applications/iTerm.app" ] || [ -d "/Applications/iTerm 2.app" ]; then
+                    echo "iTerm2"
+                    return
+                fi
+                ;;
+            "Warp")
+                if [ -d "/Applications/Warp.app" ]; then
+                    echo "Warp"
+                    return
+                fi
+                ;;
+            "Kitty")
+                if [ -d "/Applications/Kitty.app" ] || command -v kitty >/dev/null 2>&1; then
+                    echo "Kitty"
+                    return
+                fi
+                ;;
+            "Alacritty")
+                if [ -d "/Applications/Alacritty.app" ]; then
+                    echo "Alacritty"
+                    return
+                fi
+                ;;
+            "Terminal")
+                echo "Terminal"
+                return
+                ;;
+        esac
+    fi
+    
+    # Auto-detect best available terminal
+    if [ -d "/Applications/iTerm.app" ] || [ -d "/Applications/iTerm 2.app" ]; then
+        echo "iTerm2"
+    elif [ -d "/Applications/Warp.app" ]; then
+        echo "Warp"
+    elif [ -d "/Applications/Kitty.app" ]; then
+        echo "Kitty"
+    elif [ -d "/Applications/Alacritty.app" ]; then
+        echo "Alacritty"
+    else
+        echo "Terminal"
+    fi
+}
+
+# ============================================================================
+# Launch Terminal with OpenCode
+# ============================================================================
+
+launch_in_terminal() {
+    local TARGET_DIR="$1"
+    local TERMINAL="$2"
+    local LAUNCHER_SCRIPT="$APP_DIR/Contents/Resources/opencode-now.sh"
+    
+    # Fallback to macos directory script if Resources script doesn't exist
+    if [ ! -f "$LAUNCHER_SCRIPT" ]; then
+        LAUNCHER_SCRIPT="$(dirname "$APP_DIR")/macos/opencode-now.sh"
+    fi
+    
+    case "$TERMINAL" in
+        "iTerm2")
+            osascript <<EOF
+tell application "iTerm"
+    activate
+    create window with default profile
+    tell current session of current window
+        write text "cd '$TARGET_DIR' && bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'"
+    end tell
+end tell
+EOF
+            ;;
+        "Warp")
+            open -a "Warp" "$TARGET_DIR"
+            sleep 0.5
+            osascript -e "tell application \"System Events\" to keystroke \"cd '$TARGET_DIR' && bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'\" & return"
+            ;;
+        "Kitty")
+            if command -v kitty >/dev/null 2>&1; then
+                kitty --single-instance --directory="$TARGET_DIR" bash -c "bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'; exec bash"
+            else
+                open -a "Kitty" --args --directory="$TARGET_DIR" bash -c "bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'; exec bash"
+            fi
+            ;;
+        "Alacritty")
+            open -a "Alacritty" --args --working-directory "$TARGET_DIR" -e bash -c "bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'; exec bash"
+            ;;
+        *)
+            # Default: Terminal.app
+            osascript <<EOF
+tell application "Terminal"
+    activate
+    do script "cd '$TARGET_DIR' && bash '$LAUNCHER_SCRIPT' '$TARGET_DIR'"
+end tell
+EOF
+            ;;
+    esac
+}
+
+# ============================================================================
+# Main
+# ============================================================================
+
+TARGET_DIR=$(get_target_directory "$1")
+TERMINAL=$(get_preferred_terminal)
+
+# Save directory for next launch
+echo "$TARGET_DIR" > "$LAST_DIR_FILE"
+
+# Launch
+launch_in_terminal "$TARGET_DIR" "$TERMINAL"
